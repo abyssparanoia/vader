@@ -9,7 +9,9 @@ import play.api.data.Forms._
 class PostController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) {
 
   def list() = Action {
-    implicit request: MessagesRequest[AnyContent] => Ok("diplay post list")
+    implicit request: MessagesRequest[AnyContent] =>
+      val message: String = "diplay post list"
+      Ok(views.html.list(message))
   }
 
 }
