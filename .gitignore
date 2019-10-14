@@ -1,0 +1,20 @@
+logs
+project/project
+project/target
+target
+tmp
+.history
+dist
+/.idea
+/*.iml
+/out
+/.idea_modules
+/.classpath
+/.project
+/RUNNING_PID
+/.settings### https://raw.github.com/github/gitignore/21419e391a78f2487340b3b1240b988aaf15b54f/Scala.gitignore
+
+*.class
+*.log
+
+
