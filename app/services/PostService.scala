@@ -15,4 +15,18 @@ class PostService @Inject()(postRepository: PostRepository) {
     postRepository.create(title, description, text, now, now)
   }
 
+  def update(id: Int,
+             title: String,
+             description: String,
+             text: String): Option[Post] = {
+    val now: Long = System.currentTimeMillis()
+
+    postRepository.get(id) match {
+      case Some(value) =>
+        Option(
+          postRepository
+            .update(id, title, description, text, value.createdAt, now))
+      case None => None
+    }
+  }
 }
