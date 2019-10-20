@@ -5,7 +5,7 @@ import javax.inject._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import services._
 
 class PostController @Inject()(mcc: MessagesControllerComponents,postService: services.PostService) extends MessagesAbstractController(mcc) {
@@ -26,6 +26,18 @@ class PostController @Inject()(mcc: MessagesControllerComponents,postService: se
       val postList = postService.list()
       val json = Json.toJson(postList)
       Ok(json)
+  }
+
+  case class CreatePostRequest(title:String, description:String, text:String)
+
+  implicit val createPostRequestReads = Json.reads[CreatePostRequest]
+
+  def create(): Action[JsValue] = Action(parse.json) {
+    request =>
+      val result = request.body.validate[CreatePostRequest]
+      val dst = result.get
+      postService.create(dst.title,dst.description,dst.text)
+      Ok("success")
   }
 
 }
