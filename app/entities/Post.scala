@@ -2,9 +2,14 @@ package entities
 
 import slick.driver.MySQLDriver.api._
 
-case class Post(id: Int, title:String, description: String, text: String, createdAt: Long, updatedAt: Long)
+case class Post(id: Int,
+                title: String,
+                description: String,
+                text: String,
+                createdAt: Long,
+                updatedAt: Long)
 
-class Posts(tag:Tag) extends Table[Post](tag,"posts") {
+class Posts(tag: Tag) extends Table[Post](tag, "posts") {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
   def title = column[String]("title")
@@ -17,7 +22,8 @@ class Posts(tag:Tag) extends Table[Post](tag,"posts") {
 
   def updatedAt = column[Long]("updated_at")
 
-  def * = (id,title,description,text,createdAt,updatedAt) <> (Post.tupled,Post.unapply)
+  def * =
+    (id, title, description, text, createdAt, updatedAt) <> (Post.tupled, Post.unapply)
 }
 
 object Posts extends TableQuery(new Posts(_))

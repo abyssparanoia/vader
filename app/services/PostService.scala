@@ -3,12 +3,10 @@ package services
 import entities.Post
 import javax.inject._
 import repositories.PostRepository
-
-
 @Singleton
-class PostService @Inject() (postRepository: PostRepository) {
+class PostService @Inject()(postRepository: PostRepository) {
 
-  def get(postID: Int):Option[entities.Post] = postRepository.get(postID)
+  def get(postID: Int): Option[entities.Post] = postRepository.get(postID)
 
   def list(): List[entities.Post] = postRepository.list()
 
@@ -16,4 +14,5 @@ class PostService @Inject() (postRepository: PostRepository) {
     val now: Long = System.currentTimeMillis()
     postRepository.create(title, description, text, now, now)
   }
+
 }
