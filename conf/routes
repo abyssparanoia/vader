@@ -17,3 +17,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /posts                      controllers.PostController.list
 POST    /posts                      controllers.PostController.create
 GET     /posts/:postID              controllers.PostController.get(postID: Int)
+PUT     /posts/:postID              controllers.PostController.update(postID: Int)

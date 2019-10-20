@@ -41,4 +41,16 @@ class PostController @Inject()(mcc: MessagesControllerComponents,
     Ok(json)
   }
 
+  case class UpdatePoseRequest(title: String, description: String, text: String)
+
+  implicit val updatePoseRequestReads = Json.reads[UpdatePoseRequest]
+
+  def update(postID: Int): Action[JsValue] = Action(parse.json) { request =>
+    val result = request.body.validate[UpdatePoseRequest]
+    val dst = result.get
+    val post = postService.update(postID, dst.title, dst.description, dst.text)
+    val json = Json.toJson(post)
+    Ok(json)
+  }
+
 }
