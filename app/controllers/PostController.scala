@@ -36,8 +36,9 @@ class PostController @Inject()(mcc: MessagesControllerComponents,postService: se
     request =>
       val result = request.body.validate[CreatePostRequest]
       val dst = result.get
-      postService.create(dst.title,dst.description,dst.text)
-      Ok("success")
+      val post = postService.create(dst.title,dst.description,dst.text)
+      val json = Json.toJson(post)
+      Ok(json)
   }
 
 }
