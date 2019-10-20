@@ -1,7 +1,7 @@
 package repositories
 
 import com.google.inject.Singleton
-import slick.driver.MySQLDriver.api._
+import slick.jdbc.MySQLProfile.api._
 import entities.{Post, Posts}
 
 import scala.concurrent.Await
