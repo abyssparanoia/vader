@@ -11,11 +11,9 @@ import scala.concurrent.duration.Duration
 class PostRepository {
   private val database = Database.forConfig("db.default")
 
-  def get(postID: Int):Post = {
+  def get(postID: Int): Option[Post] = {
     val future = database.run(Posts.filter(_.id === postID).result.headOption)
-    Await.result(future,Duration.Inf) match {
-      case Some(value) => value
-    }
+    Await.result(future,Duration.Inf)
   }
 
   def list(): List[Post] = {

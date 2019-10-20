@@ -1,5 +1,6 @@
 package controllers
 
+import entities.Post
 import javax.inject._
 import play.api.mvc._
 import play.api.data._
@@ -13,9 +14,11 @@ class PostController @Inject()(mcc: MessagesControllerComponents,postService: se
 
   def get(postID: Int) = Action {
     implicit request:MessagesRequest[AnyContent] =>
-      val post = postService.get(postID)
-      val json = Json.toJson(post)
-      Ok(json)
+      val post: Option[Post] = postService.get(postID)
+      post match {
+        case Some(value) => Ok(Json.toJson(value))
+        case None => NotFound("not found post")
+    }
   }
 
   def list() = Action {

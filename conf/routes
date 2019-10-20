@@ -15,4 +15,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 
 GET     /posts                      controllers.PostController.list
-GET     /posts/:postID                      controllers.PostController.get(postID: Int)
+GET     /posts/:postID              controllers.PostController.get(postID: Int)
