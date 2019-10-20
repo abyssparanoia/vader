@@ -7,7 +7,7 @@ import play.api.data.Forms._
 import play.api.libs.json.Json
 import services._
 
-class PostController @Inject()(mcc: MessagesControllerComponents,postService: services.Post) extends MessagesAbstractController(mcc) {
+class PostController @Inject()(mcc: MessagesControllerComponents,postService: services.PostService) extends MessagesAbstractController(mcc) {
 
   implicit val postWrites = Json.writes[entities.Post]
 
