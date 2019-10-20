@@ -21,4 +21,11 @@ class PostRepository {
     Await.result(future, Duration.Inf).toList
   }
 
+  def create(title: String, description: String, text: String, createdAt: Long, updatedAt: Long) = {
+    val future = {
+      database.run(Posts.map(post => (post.title, post.description, post.text, post.createdAt, post.updatedAt)) += (title, description, text, createdAt, updatedAt))
+    }
+    Await.result(future,Duration.Inf)
+  }
+
 }
