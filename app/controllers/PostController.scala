@@ -9,7 +9,7 @@ import services._
 
 class PostController @Inject()(mcc: MessagesControllerComponents,postService: services.Post) extends MessagesAbstractController(mcc) {
 
-  implicit val postWrites = Json.writes[entities.Posts]
+  implicit val postWrites = Json.writes[entities.Post]
 
   def list() = Action {
     implicit request: MessagesRequest[AnyContent] =>

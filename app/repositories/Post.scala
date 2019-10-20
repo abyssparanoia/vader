@@ -9,7 +9,7 @@ import scala.concurrent.duration.Duration
 
 @Singleton
 class PostRepository {
-  private val database = Database.forConfig("vader")
+  private val database = Database.forConfig("db.default")
 
   def list(): List[Post] = {
     val future = database.run(Posts.sortBy(_.id).result)
