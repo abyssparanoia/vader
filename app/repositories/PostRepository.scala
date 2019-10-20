@@ -39,4 +39,17 @@ class PostRepository {
     Post(id, title, description, title, createdAt, updatedAt)
   }
 
+  def update(id: Int,
+             title: String,
+             description: String,
+             text: String,
+             createdAt: Long,
+             updatedAt: Long): Post = {
+    val post = Post(id, title, description, text, createdAt, updatedAt)
+    database.run(
+      Posts.filter(_.id === id).update(post)
+    )
+    post
+  }
+
 }
