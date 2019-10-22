@@ -1,6 +1,6 @@
 package entities
 
-import slick.driver.MySQLDriver.api._
+import slick.jdbc.MySQLProfile.api._
 
 case class User(id: String,
                 displayName: String,

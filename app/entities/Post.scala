@@ -1,8 +1,9 @@
 package entities
 
-import slick.driver.MySQLDriver.api._
+import slick.jdbc.MySQLProfile.api._
 
 case class Post(id: Int,
+                userID: String,
                 title: String,
                 description: String,
                 text: String,
@@ -11,6 +12,8 @@ case class Post(id: Int,
 
 class PostTable(tag: Tag) extends Table[Post](tag, "posts") {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+
+  def userID = column[String]("user_id")
 
   def title = column[String]("title")
 
@@ -23,7 +26,9 @@ class PostTable(tag: Tag) extends Table[Post](tag, "posts") {
   def updatedAt = column[Long]("updated_at")
 
   def * =
-    (id, title, description, text, createdAt, updatedAt) <> (Post.tupled, Post.unapply)
+    (id, userID, title, description, text, createdAt, updatedAt) <> (Post.tupled, Post.unapply)
+
+  def user = foreignKey("users", userID, UserQuery)(_.id)
 }
 
 object PostQuery extends TableQuery(new PostTable(_))
