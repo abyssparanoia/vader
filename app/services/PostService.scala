@@ -6,33 +6,18 @@ import repositories.PostRepository
 @Singleton
 class PostService @Inject()(postRepository: PostRepository) {
 
-  private def buildPost(post: entities.Post, user: entities.User): models.Post =
-    models.Post(
-      post.id,
-      models.User(
-        user.id,
-        user.displayName,
-        user.avatarURL,
-        user.createdAt,
-        user.updatedAt
-      ),
-      post.title,
-      post.description,
-      post.text,
-      post.createdAt,
-      post.updatedAt
-    )
-
   def get(postID: Int): Option[models.Post] = {
     postRepository.get(postID) match {
-      case Some(value: (Post, User)) => Option(buildPost(value._1, value._2))
-      case None                      => None
+      case Some(value: (Post, User)) =>
+        Option(models.Post.buildFromEntity(value._1, value._2))
+      case None => None
     }
   }
 
   def list(): Seq[models.Post] = {
     postRepository.list().map {
-      case (post: entities.Post, user: entities.User) => buildPost(post, user)
+      case (post: entities.Post, user: entities.User) =>
+        models.Post.buildFromEntity(post, user)
     }
   }
 
@@ -45,6 +30,7 @@ class PostService @Inject()(postRepository: PostRepository) {
       postRepository.create(userID, title, description, text, now, now)
     get(postID) match {
       case Some(value) => value
+      case None        => throw new Exception("error")
     }
   }
 
@@ -52,7 +38,7 @@ class PostService @Inject()(postRepository: PostRepository) {
     val now: Long = System.currentTimeMillis()
 
     postRepository.get(id) match {
-      case Some(value) =>
+      case Some(_) =>
         Option(
           postRepository
             .update(id, title, description, text, now))

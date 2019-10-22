@@ -13,4 +13,21 @@ case class Post(id: Int,
 object Post {
   implicit val jsonWrites = Json.writes[Post]
   implicit val jsonReads = Json.reads[Post]
+
+  def buildFromEntity(post: entities.Post, user: entities.User) =
+    Post(
+      post.id,
+      User(
+        user.id,
+        user.displayName,
+        user.avatarURL,
+        user.createdAt,
+        user.updatedAt
+      ),
+      post.title,
+      post.description,
+      post.text,
+      post.createdAt,
+      post.updatedAt
+    )
 }
