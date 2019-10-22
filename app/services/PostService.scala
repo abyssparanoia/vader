@@ -25,7 +25,8 @@ class PostService @Inject()(postRepository: PostRepository) {
       case Some(value) =>
         Option(
           postRepository
-            .update(id, title, description, text, value.createdAt, now))
+            .update(id, title, description, text, now)).map(_ =>
+          Post(id, title, description, text, value.createdAt, now))
       case None => None
     }
   }

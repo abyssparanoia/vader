@@ -43,13 +43,15 @@ class PostRepository {
              title: String,
              description: String,
              text: String,
-             createdAt: Long,
-             updatedAt: Long): Post = {
-    val post = Post(id, title, description, text, createdAt, updatedAt)
-    database.run(
-      Posts.filter(_.id === id).update(post)
+             updatedAt: Long) = {
+    val future = database.run(
+      Posts
+        .filter(_.id === id)
+        .map(c => (c.title, c.description, c.text, c.updatedAt))
+        .update((title, description, text, updatedAt))
     )
-    post
+
+    Await.result(future, Duration.Inf)
   }
 
 }
