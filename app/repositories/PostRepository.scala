@@ -4,6 +4,7 @@ import com.google.inject.Singleton
 import slick.jdbc.MySQLProfile.api._
 import entities.{Post, PostQuery, User, UserQuery}
 
+import scala.concurrent.Await._
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 
@@ -11,7 +12,7 @@ import scala.concurrent.duration.Duration
 class PostRepository {
   private val database = Database.forConfig("db.default")
 
-  def get(postID: Int): Option[(Post, User)] = {
+  def get(postID: Int): Option[models.Post] = {
     val future =
       database.run(
         PostQuery
@@ -20,13 +21,18 @@ class PostRepository {
           .on(_.userID === _.id)
           .result
           .headOption)
-    Await.result(future, Duration.Inf)
+    result(future, Duration.Inf).map {
+      case (post: Post, user: User) => models.Post.buildFromEntity(post, user)
+
+    }
   }
 
-  def list(): Seq[(Post, User)] = {
+  def list(): Seq[models.Post] = {
     val future: Future[Seq[(Post, User)]] = database.run(
       PostQuery.sortBy(_.id).join(UserQuery).on(_.userID === _.id).result)
-    Await.result(future, Duration.Inf)
+    result(future, Duration.Inf).map {
+      case (post: Post, user: User) => models.Post.buildFromEntity(post, user)
+    }
   }
 
   def create(userID: String,
@@ -46,7 +52,7 @@ class PostRepository {
              post.createdAt,
              post.updatedAt)) += (userID, title, description, text, createdAt, updatedAt))
     }
-    Await.result(future, Duration.Inf)
+    result(future, Duration.Inf)
   }
 
   def update(id: Int,
@@ -61,7 +67,7 @@ class PostRepository {
         .update((title, description, text, updatedAt))
     )
 
-    Await.result(future, Duration.Inf)
+    result(future, Duration.Inf)
   }
 
 }
