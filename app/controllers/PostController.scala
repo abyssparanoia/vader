@@ -5,7 +5,7 @@ import javax.inject._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsResult, JsValue, Json}
 import services._
 
 class PostController @Inject()(mcc: MessagesControllerComponents,
@@ -46,11 +46,13 @@ class PostController @Inject()(mcc: MessagesControllerComponents,
   implicit val updatePoseRequestReads = Json.reads[UpdatePoseRequest]
 
   def update(postID: Int): Action[JsValue] = Action(parse.json) { request =>
-    val result = request.body.validate[UpdatePoseRequest]
-    val dst = result.get
-    val post = postService.update(postID, dst.title, dst.description, dst.text)
-    val json = Json.toJson(post)
-    Ok(json)
+    val result: JsResult[UpdatePoseRequest] =
+      request.body.validate[UpdatePoseRequest]
+    val dst: UpdatePoseRequest = result.get
+    postService.update(postID, dst.title, dst.description, dst.text) match {
+      case Some(value) => Ok(Json.toJson(value))
+      case None        => NotFound("not found post")
+    }
   }
 
 }
