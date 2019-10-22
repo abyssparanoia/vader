@@ -9,7 +9,7 @@ case class Post(id: Int,
                 createdAt: Long,
                 updatedAt: Long)
 
-class Posts(tag: Tag) extends Table[Post](tag, "posts") {
+class PostTable(tag: Tag) extends Table[Post](tag, "posts") {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
   def title = column[String]("title")
@@ -26,4 +26,4 @@ class Posts(tag: Tag) extends Table[Post](tag, "posts") {
     (id, title, description, text, createdAt, updatedAt) <> (Post.tupled, Post.unapply)
 }
 
-object Posts extends TableQuery(new Posts(_))
+object PostQuery extends TableQuery(new PostTable(_))

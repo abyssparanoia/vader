@@ -2,7 +2,7 @@ package repositories
 
 import com.google.inject.Singleton
 import slick.jdbc.MySQLProfile.api._
-import entities.{Post, Posts}
+import entities.{Post, PostQuery}
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -12,12 +12,13 @@ class PostRepository {
   private val database = Database.forConfig("db.default")
 
   def get(postID: Int): Option[Post] = {
-    val future = database.run(Posts.filter(_.id === postID).result.headOption)
+    val future =
+      database.run(PostQuery.filter(_.id === postID).result.headOption)
     Await.result(future, Duration.Inf)
   }
 
   def list(): List[Post] = {
-    val future = database.run(Posts.sortBy(_.id).result)
+    val future = database.run(PostQuery.sortBy(_.id).result)
     Await.result(future, Duration.Inf).toList
   }
 
@@ -28,7 +29,7 @@ class PostRepository {
              updatedAt: Long): Post = {
     val future = {
       database.run(
-        Posts.map(post =>
+        PostQuery.map(post =>
           (post.title,
            post.description,
            post.text,
@@ -45,7 +46,7 @@ class PostRepository {
              text: String,
              updatedAt: Long) = {
     val future = database.run(
-      Posts
+      PostQuery
         .filter(_.id === id)
         .map(c => (c.title, c.description, c.text, c.updatedAt))
         .update((title, description, text, updatedAt))
