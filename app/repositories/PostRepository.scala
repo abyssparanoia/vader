@@ -1,6 +1,6 @@
 package repositories
 
-import com.google.inject.Singleton
+import com.google.inject.{ImplementedBy, Singleton}
 import slick.jdbc.MySQLProfile.api._
 import entities.{Post, PostQuery, User, UserQuery}
 
@@ -8,8 +8,25 @@ import scala.concurrent.Await._
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 
+@ImplementedBy(classOf[PostRepositoryImpl])
+trait PostRepository {
+  def get(postID: Int): Option[models.Post]
+  def list(): Seq[models.Post]
+  def create(userID: String,
+             title: String,
+             description: String,
+             text: String,
+             createdAt: Long,
+             updatedAt: Long): Int
+  def update(id: Int,
+             title: String,
+             description: String,
+             text: String,
+             updatedAt: Long): Int
+}
+
 @Singleton
-class PostRepository {
+class PostRepositoryImpl extends PostRepository {
   private val database = Database.forConfig("db.default")
 
   def get(postID: Int): Option[models.Post] = {
@@ -59,7 +76,7 @@ class PostRepository {
              title: String,
              description: String,
              text: String,
-             updatedAt: Long) = {
+             updatedAt: Long): Int = {
     val future = database.run(
       PostQuery
         .filter(_.id === id)
