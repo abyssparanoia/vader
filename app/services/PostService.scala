@@ -1,23 +1,25 @@
 package services
 
 import javax.inject._
-import repositories.PostRepository
+import domain.repository.PostRepository
+import domain.model.{Post}
+
 @Singleton
 class PostService @Inject()(postRepository: PostRepository) {
 
-  def get(postID: Int): Option[models.Post] = {
+  def get(postID: Long): Option[Post] = {
     postRepository.get(postID) match {
       case Some(value) => Option(value)
       case None        => None
     }
   }
 
-  def list(): Seq[models.Post] = postRepository.list()
+  def list(): Seq[Post] = postRepository.list()
 
   def create(userID: String,
              title: String,
              description: String,
-             text: String): models.Post = {
+             text: String): Post = {
     val now: Long = System.currentTimeMillis()
     val postID =
       postRepository.create(userID, title, description, text, now, now)
