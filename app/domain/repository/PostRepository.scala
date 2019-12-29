@@ -4,7 +4,7 @@ import domain.model.Post
 
 trait PostRepository {
   def get(postID: Long): Option[Post]
-  def list(): Seq[models.Post]
+  def list(): Seq[Post]
   def create(userID: String,
              title: String,
              description: String,

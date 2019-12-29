@@ -26,4 +26,16 @@ class PostRepositoryImpl extends PostRepository {
       case (post, user) => PostEntity.outputModel(post, user)
     }
   }
+
+  override def list(): Seq[Post] = {
+    val future = database.run(
+      Tables.Posts
+        .join(Tables.Users)
+        .on(_.userId === _.id)
+        .result
+    )
+    result(future, Duration.Inf).map {
+      case (post, user) => PostEntity.outputModel(post, user)
+    }
+  }
 }
