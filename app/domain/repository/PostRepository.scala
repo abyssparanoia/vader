@@ -1,7 +1,10 @@
 package domain.repository
 
 import domain.model.Post
+import com.google.inject.ImplementedBy
+import infrastructure.repository.PostRepositoryImpl
 
+@ImplementedBy(classOf[PostRepositoryImpl])
 trait PostRepository {
   def get(postID: Long): Option[Post]
   def list(): Seq[Post]

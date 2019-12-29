@@ -2,10 +2,9 @@ package domain.repository
 
 import com.google.inject.ImplementedBy
 import domain.model
+import infrastructure.repository.UserRepositoryImpl
 
-import infrastructure.repository
-
-@ImplementedBy(classOf[repository.UserRepositoryImpl])
-trait User {
+@ImplementedBy(classOf[UserRepositoryImpl])
+trait UserRepository {
   def get(id: String): Option[model.User]
 }

@@ -1,11 +1,11 @@
 package services
 
 import javax.inject.{Inject, Singleton}
-import domain.repository
 import domain.model
+import domain.repository.UserRepository
 
 @Singleton
-class UserService @Inject()(userRepository: repository.User) {
+class UserService @Inject()(userRepository: UserRepository) {
 
   def get(id: String): Option[model.User] = {
     userRepository.get(id) match {
