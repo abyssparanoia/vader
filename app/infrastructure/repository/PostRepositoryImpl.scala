@@ -56,4 +56,19 @@ class PostRepositoryImpl extends PostRepository {
            post.updatedAt)) += (userID, title, description, text, createdAt, updatedAt))
     result(future, Duration.Inf)
   }
+
+  override def update(id: Long,
+                      title: String,
+                      description: String,
+                      text: String,
+                      updatedAt: Long): Long = {
+
+    val future = database.run(
+      Tables.Posts
+        .filter(_.id === id)
+        .map(c => (c.title, c.description, c.text, c.updatedAt))
+        .update((title, description, text, updatedAt))
+    )
+    result(future, Duration.Inf)
+  }
 }
