@@ -44,7 +44,7 @@ class PostRepositoryImpl extends PostRepository {
                       description: String,
                       text: String,
                       createdAt: Long,
-                      updatedAt: Long): Long = {
+                      updatedAt: Long): Int = {
     val future = database.run(
       Tables.Posts.map(
         post =>
@@ -61,7 +61,7 @@ class PostRepositoryImpl extends PostRepository {
                       title: String,
                       description: String,
                       text: String,
-                      updatedAt: Long): Long = {
+                      updatedAt: Long): Int = {
 
     val future = database.run(
       Tables.Posts

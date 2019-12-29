@@ -10,7 +10,7 @@ import scala.concurrent.Await._
 
 import com.google.inject.{Singleton}
 @Singleton
-class UserRepositoryImpl extends repository.User {
+class UserRepositoryImpl extends repository.UserRepository {
   private val database = Database.forConfig("db.default")
 
   override def get(id: String): Option[User] = {

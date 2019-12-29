@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import javax.inject.Inject
 import play.api.mvc.{
@@ -9,9 +9,10 @@ import play.api.mvc.{
 }
 import domain.model
 import play.api.libs.json.{JsResult, JsValue, Json}
+import service.UserService
 
 class UserController @Inject()(mcc: MessagesControllerComponents,
-                               userService: services.UserService)
+                               userService: UserService)
     extends MessagesAbstractController(mcc) {
   def get(id: String) = Action {
     implicit request: MessagesRequest[AnyContent] =>

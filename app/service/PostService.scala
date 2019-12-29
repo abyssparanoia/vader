@@ -1,4 +1,4 @@
-package services
+package service
 
 import javax.inject._
 import domain.repository.PostRepository
@@ -29,7 +29,7 @@ class PostService @Inject()(postRepository: PostRepository) {
     }
   }
 
-  def update(id: Int, title: String, description: String, text: String) = {
+  def update(id: Long, title: String, description: String, text: String) = {
     val now: Long = System.currentTimeMillis()
 
     postRepository.get(id) match {

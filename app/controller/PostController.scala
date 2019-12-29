@@ -1,18 +1,18 @@
-package controllers
+package controller
 
-import models._
+import domain.model.Post
 import javax.inject._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.json.{JsResult, JsValue, Json}
-import services._
+import service.PostService
 
 class PostController @Inject()(mcc: MessagesControllerComponents,
-                               postService: services.PostService)
+                               postService: PostService)
     extends MessagesAbstractController(mcc) {
 
-  def get(postID: Int) = Action {
+  def get(postID: Long) = Action {
     implicit request: MessagesRequest[AnyContent] =>
       val post: Option[Post] = postService.get(postID)
       post match {
@@ -44,7 +44,7 @@ class PostController @Inject()(mcc: MessagesControllerComponents,
 
   implicit val updatePoseRequestReads = Json.reads[UpdatePoseRequest]
 
-  def update(postID: Int): Action[JsValue] = Action(parse.json) { request =>
+  def update(postID: Long): Action[JsValue] = Action(parse.json) { request =>
     val result: JsResult[UpdatePoseRequest] =
       request.body.validate[UpdatePoseRequest]
     val dst: UpdatePoseRequest = result.get
