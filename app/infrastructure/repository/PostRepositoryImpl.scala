@@ -38,4 +38,22 @@ class PostRepositoryImpl extends PostRepository {
       case (post, user) => PostEntity.outputModel(post, user)
     }
   }
+
+  override def create(userID: String,
+                      title: String,
+                      description: String,
+                      text: String,
+                      createdAt: Long,
+                      updatedAt: Long): Long = {
+    val future = database.run(
+      Tables.Posts.map(
+        post =>
+          (post.userId,
+           post.title,
+           post.description,
+           post.text,
+           post.createdAt,
+           post.updatedAt)) += (userID, title, description, text, createdAt, updatedAt))
+    result(future, Duration.Inf)
+  }
 }

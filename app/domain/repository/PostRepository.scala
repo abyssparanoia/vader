@@ -10,10 +10,10 @@ trait PostRepository {
              description: String,
              text: String,
              createdAt: Long,
-             updatedAt: Long): Int
+             updatedAt: Long): Long
   def update(id: Long,
              title: String,
              description: String,
              text: String,
-             updatedAt: Long): Int
+             updatedAt: Long): Long
 }
