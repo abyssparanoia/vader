@@ -9,7 +9,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.Await._
 
 @Singleton()
-class PostRepositoryImpl extends repository.User {
+class UserRepositoryImpl extends repository.User {
   private val database = Database.forConfig("db.default")
 
   override def get(id: String): Option[User] = {
