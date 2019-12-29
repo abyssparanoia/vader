@@ -8,7 +8,8 @@ import infrastructure.entity.{UserEntity, Tables}
 import scala.concurrent.duration.Duration
 import scala.concurrent.Await._
 
-@Singleton()
+import com.google.inject.{Singleton}
+@Singleton
 class UserRepositoryImpl extends repository.User {
   private val database = Database.forConfig("db.default")
 
